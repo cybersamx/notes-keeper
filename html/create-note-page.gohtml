@@ -1,0 +1,20 @@
+{{template "base" .}}
+
+{{define "title"}}Create Note{{end}}
+
+{{define "body"}}
+    <h1 class="heading">{{template "title" .}}</h1>
+    <div class="container">
+        <form action="/createNote" method="POST">
+            <div class="form-group">
+                <label for="user">Title</label>
+                <input type="text" class="form-control" name="title" placeholder="Enter note title" />
+            </div>
+            <div class="form-group">
+                <label for="user">Text</label>
+                <input type="text" class="form-control" name="text" placeholder="Enter note text" />
+            </div>
+            <button type="submit" class="btn btn-success">Create Note</button>
+        </form>
+    </div>
+{{end}}

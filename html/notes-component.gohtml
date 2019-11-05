@@ -1,0 +1,7 @@
+{{define "notes"}}
+    <div class="list-group">
+        {{range .Notes}}
+        <a href="#" class="list-group-item list-group-item-action">{{.Title}}</a>
+        {{end}}
+    </div>
+{{end}}
