@@ -25,7 +25,7 @@ func main() {
 	infoLog := log.New(os.Stdout, "Info: ", log.Ldate|log.Ltime|log.Lshortfile)
 
 	// Database
-	dsn := "host=localhost port=5432 user=app-user dbname=app password=not-secure-pwd sslmode=disable"
+	dsn := "host=db port=5432 dbname=postgres user=postgres password=postgres sslmode=disable"
 	db, err := gorm.Open("postgres", dsn)
 	if err != nil {
 		errLog.Fatal(err)
