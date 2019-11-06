@@ -1,15 +1,15 @@
 {{template "base" .}}
 
-{{define "title"}}Notes{{end}}
+{{define "title"}}List of Notes{{end}}
 
 {{define "body"}}
-    <h1>{{template "title" .}}</h1>
+    <h3 class="m-2 text-secondary">{{template "title" .}}</h3>
     <div class="container-fluid">
         <div>
             {{template "notes" .}}
         </div>
         <div class="row">
-            <button type="button" class="btn btn-link"><a href="/createNote">Create Note</a></button>
+            <button type="button" class="btn btn-link"><a href="/editNote">Create Note</a></button>
         </div>
     </div>
 {{end}}

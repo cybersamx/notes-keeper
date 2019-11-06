@@ -1,7 +1,17 @@
 {{define "notes"}}
-    <div class="list-group">
+    <div class="card-columns">
         {{range .Notes}}
-        <a href="#" class="list-group-item list-group-item-action">{{.Title}}</a>
+            <div class="card">
+                <div class="card-header">{{.Title}}</div>
+                <div class="card-body">
+                    <p class="card-text">{{.Text}}</p>
+                    <a href="/editNote?noteID={{.ID}}" class="card-link mr-2">Edit</a>
+                    <form action="/removeNote" method="POST" style="display: inline">
+                        <input type="hidden" name="noteID" value="{{.ID}}" />
+                        <a href="#" class="card-link" onclick="$(this).closest('form').submit()">Remove</a>
+                    </form>
+                </div>
+            </div>
         {{end}}
     </div>
 {{end}}

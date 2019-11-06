@@ -1,0 +1,32 @@
+{{template "base" .}}
+
+{{define "title"}}Create Note{{end}}
+
+{{define "body"}}
+    <h3 class="m-2 text-secondary">{{template "title" .}}</h3>
+    <div class="container">
+        <form action="/editNote" method="POST">
+            <div class="form-group">
+                <label>Title</label>
+                <input type="text"
+                       class="form-control"
+                       name="title"
+                       placeholder="Enter note title"
+                       value="{{if .Note.Title}}{{.Note.Title}}{{end}}"
+                />
+            </div>
+            <div class="form-group">
+                <label>Text</label>
+                <textarea class="form-control"
+                          rows="3"
+                          name="text"
+                          placeholder="Enter note text">{{if .Note.Text}}{{.Note.Text}}{{end}}</textarea>
+            </div>
+            <input type="hidden"
+                   name="noteID"
+                   value="{{if .Note.ID}}{{.Note.ID}}{{end}}" />
+            <button type="submit" class="btn btn-success float-right">{{if .Note.ID}}Update{{else}}Create{{end}} Note</button>
+            <a href="/" class="btn btn-outline-secondary float-right mr-3">Cancel</a>
+        </form>
+    </div>
+{{end}}

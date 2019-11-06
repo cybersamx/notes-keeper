@@ -1,45 +1,61 @@
 package models
 
 import (
-    "github.com/jinzhu/gorm"
+	"github.com/jinzhu/gorm"
 )
 
 type NoteModel struct {
-    DB *gorm.DB
+	DB *gorm.DB
 }
 
 func NewNoteModel(DB *gorm.DB) *NoteModel {
-    model := NoteModel{
-        DB: DB,
-    }
-    refNote := Note{}
-    DB.AutoMigrate(&refNote)
+	model := NoteModel{
+		DB: DB,
+	}
+	note := Note{}
+	DB.AutoMigrate(&note)
 
-    return &model
+	return &model
 }
 
-func (m *NoteModel) GetNote(ID int) (*Note, error) {
-    var note *Note
-    err := m.DB.Where("id = ?", ID).Find(note).Error
+func (m *NoteModel) GetNote(noteID string) *Note {
+	fetchNote := Note{}
+	notFound := m.DB.Where("ID = ?", noteID).First(&fetchNote).RecordNotFound()
 
-    return note, err
+	if notFound {
+		return nil
+	}
+
+	return &fetchNote
 }
 
-func (m *NoteModel) CreateNote(title, text string) (*Note, error) {
-    var note = &Note{
-        Title:     title,
-        Text:      text,
-    }
+func (m *NoteModel) Upsert(noteID, title, text string) (*Note, error) {
+	newNote := Note{
+		ID:    noteID,
+		Title: title,
+		Text:  text,
+	}
 
-    err := m.DB.Create(&note).Error
+	fetchNote := Note{}
 
-    return note, err
+	err := m.DB.Where("ID = ?", noteID).Assign(newNote).FirstOrCreate(&fetchNote).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return &fetchNote, err
 }
 
 func (m *NoteModel) GetNotes() ([]*Note, error) {
-    var notes = make([]*Note, 0)
-    err := m.DB.Find(&notes).Error
+	notes := make([]*Note, 0)
+	err := m.DB.Find(&notes).Error
 
-    return notes, err
+	return notes, err
 }
 
+func (m *NoteModel) RemoveNote(noteID string) error {
+	note := Note{
+		ID: noteID,
+	}
+	return m.DB.Unscoped().Delete(&note).Error
+}
